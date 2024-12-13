@@ -943,7 +943,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rocket_response"
+name = "rocket_responder"
 version = "0.1.0"
 dependencies = [
  "rocket",
