@@ -2,8 +2,16 @@
 name = "rocket_response"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "A library for handling HTTP responses in Rocket with structured enums."
+repository = "https://github.com/sacha-renault/rocket_response"
+homepage = "https://github.com/sacha-renault/rocket_response"
+readme = "README.md"
+keywords = ["rocket", "http", "response", "json"]
+categories = ["web-programming", "api-bindings"]
+license-file = "LICENSE"
 
 [dependencies]
-rocket = { version = "0.5.0-rc.1", features = ["json"] }
+rocket = { version = "0.5.1", features = ["json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
