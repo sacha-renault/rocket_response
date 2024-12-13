@@ -1,14 +1,13 @@
-use rocket::data::Outcome;
 use rocket::http::{ContentType, Status};
-use rocket::serde::json::Json;
-use rocket::response::{Responder, Response};
 use rocket::request::Request;
+use rocket::response::{Responder, Response};
+use rocket::serde::json::Json;
 use serde::Serialize;
 
 pub enum ApiResponse<T, E> {
     Ok(Status, Json<T>),
     Err(Status, Json<E>),
-    Empty(Status)
+    Empty(Status),
 }
 
 /// 200 OK
@@ -458,7 +457,6 @@ where
     ApiResponse::Err(Status::NetworkAuthenticationRequired, Json(data))
 }
 
-
 impl<'r, T, E> Responder<'r, 'static> for ApiResponse<T, E>
 where
     T: Serialize,
@@ -466,24 +464,18 @@ where
 {
     fn respond_to(self, req: &'r Request<'_>) -> rocket::response::Result<'static> {
         match self {
-            ApiResponse::Ok(status, json) => {
-                Response::build_from(json.respond_to(req)?)
-                    .status(status)
-                    .header(ContentType::JSON)
-                    .ok()
-            }
-            ApiResponse::Err(status, json) => {
-                Response::build_from(json.respond_to(req)?)
-                    .status(status)
-                    .header(ContentType::JSON)
-                    .ok()
-            }
-            ApiResponse::Empty(status) => {
-                Response::build_from("".respond_to(req)?)
-                    .status(status)
-                    .header(ContentType::JSON)
-                    .ok()
-            }
+            ApiResponse::Ok(status, json) => Response::build_from(json.respond_to(req)?)
+                .status(status)
+                .header(ContentType::JSON)
+                .ok(),
+            ApiResponse::Err(status, json) => Response::build_from(json.respond_to(req)?)
+                .status(status)
+                .header(ContentType::JSON)
+                .ok(),
+            ApiResponse::Empty(status) => Response::build_from("".respond_to(req)?)
+                .status(status)
+                .header(ContentType::JSON)
+                .ok(),
         }
     }
 }
